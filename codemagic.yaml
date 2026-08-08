@@ -1,0 +1,153 @@
+# yaml-language-server: $schema=https://json.schemastore.org/codemagic.json
+
+workflows:
+  continuous-integration:
+    name: Continuous integration
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      flutter: 3.44.9
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: "{develop,main}"
+          include: true
+          source: true
+        - pattern: "{develop,main}"
+          include: true
+          source: false
+      cancel_previous_builds: true
+    when:
+      changeset:
+        excludes:
+          - "**/*.md"
+    scripts:
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Check Dart formatting
+        script: dart format --output=none --set-exit-if-changed lib test
+      - name: Analyze source code
+        script: flutter analyze
+      - name: Run tests with coverage
+        script: flutter test --coverage
+      - name: Build Android debug APK
+        script: flutter build apk --debug --build-number="$PROJECT_BUILD_NUMBER"
+      - name: Build unsigned iOS app
+        script: flutter build ios --debug --no-codesign --build-number="$PROJECT_BUILD_NUMBER"
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+      - build/ios/iphoneos/**/*.app
+      - coverage/lcov.info
+      - /tmp/xcodebuild_logs/*.log
+
+  android-internal-release:
+    name: Android internal release
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      android_signing:
+        - oculos_lay_upload
+      groups:
+        - google_play
+      vars:
+        PACKAGE_NAME: br.com.oculoslay.oculos_lay
+        GOOGLE_PLAY_TRACK: internal
+      flutter: 3.44.9
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+    triggering:
+      events:
+        - tag
+      tag_patterns:
+        - pattern: "v+([0-9]).+([0-9]).+([0-9])"
+          include: true
+    scripts:
+      - name: Verify release commit is on main
+        script: |
+          git fetch origin main:refs/remotes/origin/main
+          git merge-base --is-ancestor HEAD refs/remotes/origin/main
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Check Dart formatting
+        script: dart format --output=none --set-exit-if-changed lib test
+      - name: Analyze source code
+        script: flutter analyze
+      - name: Run tests
+        script: flutter test
+      - name: Build signed Android App Bundle
+        script: |
+          VERSION_NAME="$(awk '/^version:/ { split($2, parts, "+"); print parts[1] }' pubspec.yaml)"
+          test -n "$VERSION_NAME"
+          flutter build appbundle --release \
+            --build-name="$VERSION_NAME" \
+            --build-number="$PROJECT_BUILD_NUMBER"
+    artifacts:
+      - build/app/outputs/bundle/**/*.aab
+      - build/app/outputs/mapping/**/mapping.txt
+    publishing:
+      google_play:
+        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS
+        track: $GOOGLE_PLAY_TRACK
+        submit_as_draft: true
+
+  ios-testflight-release:
+    name: iOS TestFlight release
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    integrations:
+      app_store_connect: oculos_lay_app_store
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: br.com.oculoslay.oculosLay
+      flutter: 3.44.9
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+    triggering:
+      events:
+        - tag
+      tag_patterns:
+        - pattern: "v+([0-9]).+([0-9]).+([0-9])"
+          include: true
+    scripts:
+      - name: Verify release commit is on main
+        script: |
+          git fetch origin main:refs/remotes/origin/main
+          git merge-base --is-ancestor HEAD refs/remotes/origin/main
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Check Dart formatting
+        script: dart format --output=none --set-exit-if-changed lib test
+      - name: Analyze source code
+        script: flutter analyze
+      - name: Run tests
+        script: flutter test
+      - name: Configure Xcode signing
+        script: xcode-project use-profiles
+      - name: Build signed iOS IPA
+        script: |
+          VERSION_NAME="$(awk '/^version:/ { split($2, parts, "+"); print parts[1] }' pubspec.yaml)"
+          test -n "$VERSION_NAME"
+          flutter build ipa --release \
+            --build-name="$VERSION_NAME" \
+            --build-number="$PROJECT_BUILD_NUMBER" \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false
