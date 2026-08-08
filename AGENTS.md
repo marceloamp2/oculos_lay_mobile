@@ -2,7 +2,7 @@
 
 ## Limites da aplicação
 
-- Este aplicativo Flutter é a experiência Android do cliente para catálogo, carrinho, criação e acompanhamento de pedidos, notícias, contato por WhatsApp e links internos de notificações push.
+- Este aplicativo Flutter é a experiência Android e iOS do cliente para catálogo, carrinho, criação e acompanhamento de pedidos, notícias, contato por WhatsApp e links internos de notificações push.
 - Consuma apenas a API Laravel. Nunca acesse o Pedido OK diretamente nem replique no dispositivo regras oficiais de preço, estoque, estado dos pedidos, permissões ou finanças.
 - Mantenha os modelos da API na fronteira de dados e converta-os em conceitos claros de domínio quando essa separação reduzir o acoplamento.
 
