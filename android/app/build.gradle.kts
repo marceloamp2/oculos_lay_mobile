@@ -4,6 +4,9 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val isCiBuild = System.getenv("CI").toBoolean()
+val releaseKeystorePath = System.getenv("CM_KEYSTORE_PATH")
+
 android {
     namespace = "br.com.oculoslay.oculos_lay"
     compileSdk = flutter.compileSdkVersion
@@ -25,11 +28,24 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (releaseKeystorePath != null) {
+            create("release") {
+                storeFile = file(releaseKeystorePath)
+                storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("CM_KEY_ALIAS")
+                keyPassword = System.getenv("CM_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = when {
+                releaseKeystorePath != null -> signingConfigs.getByName("release")
+                isCiBuild -> null
+                else -> signingConfigs.getByName("debug")
+            }
         }
     }
 }
