@@ -28,4 +28,4 @@
 
 - Execute `dart format` nos arquivos Dart alterados.
 - Execute `flutter analyze` após alterações em Dart ou configurações.
-- Execute `flutter test` para mudanças de comportamento, adicionando testes unitários ou de widget específicos para novas regras e regressões.
+- Não crie nem modifique testes automatizados no aplicativo mobile. Quando uma verificação existente executar `flutter test`, apenas rode a suíte sem alterar seus testes.
