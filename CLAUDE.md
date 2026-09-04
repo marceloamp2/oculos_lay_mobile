@@ -1,6 +1,6 @@
 # Diretrizes do aplicativo mobile
 
-Estas diretrizes complementam o `AGENTS.md` da raiz do repositório. Em caso de
+Estas diretrizes complementam o `CLAUDE.md` da raiz do repositório. Em caso de
 conflito, o que está escrito aqui prevalece para o diretório `mobile/`.
 
 ## Arquitetura
@@ -99,7 +99,7 @@ verificação local.
 
 ## Testes
 
-- Conforme o `AGENTS.md` da raiz, somente a API autoriza criação ou modificação
+- Conforme o `CLAUDE.md` da raiz, somente a API autoriza criação ou modificação
   de testes automatizados. Não crie nem altere testes em `mobile/` sem
   solicitação explícita.
 
