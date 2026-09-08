@@ -88,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ..clearSnackBars()
         ..showSnackBar(
           SnackBar(
+            backgroundColor: AppColors.error,
             content: Text(
               authFailure?.localizedMessage(AppLocalizations.of(context)) ??
                   AppLocalizations.of(context).loginSupportUnavailable,

@@ -79,6 +79,7 @@ Ao criar uma funcionalidade, siga esta sequência:
 
 - Prefira `const` em construtores de widgets sempre que possível.
 - Extraia widgets em classes próprias em vez de métodos que retornam `Widget`.
+- Mantenha widgets específicos em `ui/features/<feature>/widgets/`. À medida que o desenvolvimento avançar e houver necessidade real de reutilização entre features, crie ou promova componentes compartilhados em `ui/core/`; não antecipe componentes globais sem uso concreto.
 - Trate os três estados de toda tela que carrega dados: carregando, erro e
   sucesso. Nenhuma tela deve falhar silenciosamente.
 - Descarte controllers, timers, streams e listeners em `dispose`.
