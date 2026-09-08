@@ -8,8 +8,10 @@ conflito, o que está escrito aqui prevalece para o diretório `mobile/`.
 Siga o MVVM descrito no guia oficial de arquitetura do Flutter:
 https://docs.flutter.dev/app-architecture/guide
 
-A aplicação é dividida em três camadas, com dependências apontando sempre da UI
-para os dados. Nenhuma camada conhece a camada acima dela.
+A aplicação tem duas camadas principais: UI e dados. O fluxo padrão é
+View → ViewModel → Repository → Service. A camada de domínio com Use Cases é
+opcional e só deve ser adicionada quando houver necessidade concreta. A camada
+de dados não depende da UI.
 
 ### Camada de UI
 
@@ -22,13 +24,26 @@ para os dados. Nenhuma camada conhece a camada acima dela.
 - Cada tela tem um ViewModel próprio. Não compartilhe um ViewModel entre telas
   sem necessidade real.
 
-### Camada de domínio
+### Modelos de domínio
 
-- **Use Case**: opcional. Crie um apenas quando a lógica de negócio polui o
-  ViewModel ou precisa ser reaproveitada por mais de um ViewModel.
-- Não crie Use Case que apenas repassa a chamada ao Repository.
 - **Domain Model**: imutável, sem dependência de framework, sem anotações de
   serialização e sem conhecimento da origem dos dados.
+- Mantenha os modelos em `domain/models/` e as falhas de domínio em
+  `domain/errors/`. Essas pastas não exigem uma camada intermediária de Use Cases.
+- Preserve a separação entre modelos da API e modelos de domínio; os
+  Repositories fazem a conversão.
+
+### Camada de domínio opcional: Use Cases
+
+- Por padrão, ViewModels acessam Repositories diretamente, por injeção no
+  construtor.
+- Crie um **Use Case** apenas quando a lógica for complexa ou precisar ser
+  reaproveitada por mais de um ViewModel. Combinações simples de dados de
+  Repositories podem permanecer no ViewModel.
+- Use Cases dependem de Repositories. Um ViewModel pode consumir ambos;
+  adicionar um Use Case não obriga as demais ações a passar por ele.
+- Não crie Use Case que apenas repassa a chamada ao Repository nem crie
+  `domain/use_cases/` antecipadamente.
 
 ### Camada de dados
 

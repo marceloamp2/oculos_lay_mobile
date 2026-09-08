@@ -1,0 +1,117 @@
+{
+  "@@locale": "pt",
+
+  "brandName": "LAY",
+  "@brandName": {
+    "description": "Brand name shown in the login header"
+  },
+  "brandTagline": "EYEWEAR",
+  "@brandTagline": {
+    "description": "Brand segment shown under the brand name"
+  },
+
+  "loginHeaderEyebrow": "ACESSO DO CLIENTE",
+  "@loginHeaderEyebrow": {
+    "description": "Small label at the top of the login header"
+  },
+  "loginHeaderSubtitle": "coleções selecionadas para sua ótica",
+  "@loginHeaderSubtitle": {
+    "description": "Context sentence at the bottom of the login header"
+  },
+  "loginTitle": "Boas-vindas.",
+  "@loginTitle": {
+    "description": "Login form title"
+  },
+  "loginSubtitle": "Entre para consultar produtos, montar pedidos e acompanhar suas compras.",
+  "@loginSubtitle": {
+    "description": "Login form supporting text"
+  },
+  "loginEmailLabel": "E-mail",
+  "@loginEmailLabel": {
+    "description": "Email field placeholder"
+  },
+  "loginPasswordLabel": "Senha",
+  "@loginPasswordLabel": {
+    "description": "Password field placeholder"
+  },
+  "loginShowPassword": "Mostrar senha",
+  "@loginShowPassword": {
+    "description": "Accessibility label for the button that reveals the password"
+  },
+  "loginHidePassword": "Ocultar senha",
+  "@loginHidePassword": {
+    "description": "Accessibility label for the button that hides the password"
+  },
+  "loginForgotPassword": "Esqueci minha senha",
+  "@loginForgotPassword": {
+    "description": "Password recovery action"
+  },
+  "loginForgotPasswordNotice": "Fale com a equipe Lay para recuperar sua senha.",
+  "@loginForgotPasswordNotice": {
+    "description": "Message shown while the password recovery screen does not exist"
+  },
+  "loginSubmit": "Entrar",
+  "@loginSubmit": {
+    "description": "Primary login action"
+  },
+  "loginFirstAccessDivider": "PRIMEIRO ACESSO?",
+  "@loginFirstAccessDivider": {
+    "description": "Divider label above the first access action"
+  },
+  "loginFirstAccess": "Falar com a equipe Lay",
+  "@loginFirstAccess": {
+    "description": "First access action that opens the support channel"
+  },
+
+  "loginEmailRequired": "Informe seu e-mail.",
+  "@loginEmailRequired": {
+    "description": "Validation message for an empty email field"
+  },
+  "loginEmailInvalid": "Informe um e-mail válido.",
+  "@loginEmailInvalid": {
+    "description": "Validation message for a malformed email"
+  },
+  "loginPasswordRequired": "Informe sua senha.",
+  "@loginPasswordRequired": {
+    "description": "Validation message for an empty password field"
+  },
+
+  "errorNetworkUnavailable": "Não foi possível conectar. Verifique sua internet e tente novamente.",
+  "@errorNetworkUnavailable": {
+    "description": "Message shown when the device cannot reach the API"
+  },
+  "errorServerUnavailable": "Estamos com instabilidade no servidor. Tente novamente em instantes.",
+  "@errorServerUnavailable": {
+    "description": "Message shown when the API returns a server error"
+  },
+  "errorUnexpected": "Algo deu errado. Tente novamente.",
+  "loginInvalidCredentials": "Não foi possível entrar. Verifique suas credenciais e tente novamente.",
+  "@loginInvalidCredentials": {
+    "description": "Message shown when login credentials are rejected"
+  },
+  "loginSupportUnavailable": "Não foi possível abrir o canal de atendimento. Tente novamente.",
+  "@loginSupportUnavailable": {
+    "description": "Message shown when the support channel cannot be opened"
+  },
+  "@errorUnexpected": {
+    "description": "Fallback message for unexpected failures"
+  },
+
+  "homeTitle": "Óculos Lay",
+  "@homeTitle": {
+    "description": "Title of the placeholder screen shown after login"
+  },
+  "homeWelcome": "Olá, {name}!",
+  "@homeWelcome": {
+    "description": "Greeting shown to the authenticated user",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeSignOut": "Sair",
+  "@homeSignOut": {
+    "description": "Sign out action"
+  }
+}
